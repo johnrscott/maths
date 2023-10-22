@@ -25,3 +25,9 @@ impl fmt::Display for Term {
         }
     }
 }
+
+macro_rules! var_term {
+    ($var:expr) => {Rc::new(Term::from_variable($var.clone()))}
+}
+
+pub(crate) use var_term;

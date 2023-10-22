@@ -37,9 +37,9 @@ impl fmt::Display for Formula {
 	const not: &str = "\u{00ac}";
 	match self {
             Self::Predicate(pred) => write!(f, "{pred}"),
-            Self::Equal(term1, term2) => write!(f, "{term1} = {term2}"),
+            Self::Equal(term1, term2) => write!(f, "[{term1} = {term2}]"),
             Self::Not(func) => write!(f, "{not}{func}"),
-            Self::BinaryConnective(bin) => write!(f, "bin"),
+            Self::BinaryConnective(bin) => write!(f, "[{bin}]"),
 	    Self::Quantifier(quant) => write!(f, "{quant}"),
 	}
     }
@@ -58,3 +58,24 @@ macro_rules! quant_form {
 }
 
 pub(crate) use quant_form;
+
+/// Binary-connective formula
+macro_rules! bin_form {
+    ($quant: expr) => {Rc::new(Formula::from_binary_connective($quant.clone()))}
+}
+
+pub(crate) use bin_form;
+
+/// Equality formula
+macro_rules! eq_form {
+    ($term1: expr, $term2: expr) => {Rc::new(Formula::equality($term1.clone(), $term2.clone()))}
+}
+
+pub(crate) use eq_form;
+
+/// Negate formula
+macro_rules! not {
+    ($term: expr) => {Rc::new(Formula::negate($term.clone()))}
+}
+
+pub(crate) use not;
